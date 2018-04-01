@@ -24,9 +24,9 @@ class ContentFormatExceptionHandler {
     @ResponseBody
     String handler(@RequestAttribute(value = ContentFormatInterceptor.CONTENT_FORMATTER) ContentFormatter contentFormatter, ContentFormatException contentFormatException, HttpServletRequest request){
         contentFormatter.initializeDefaultBuilder()
-        contentFormatter.content().'workspaceContent' {
-            'resultCode' contentFormatException.exceptionCode
-            'exceptionInformation' messageSource.getMessage(contentFormatException.toString(), null, LocaleContextHolder.getLocale())
+        contentFormatter.content().'workspace_content' {
+            'result_code' contentFormatException.exceptionCode
+            'exception_information' messageSource.getMessage(contentFormatException.toString(), null, LocaleContextHolder.getLocale())
         }
         return contentFormatter.toString()
     }

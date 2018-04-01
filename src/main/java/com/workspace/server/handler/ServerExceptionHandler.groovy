@@ -22,9 +22,9 @@ class ServerExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     String handler(@RequestAttribute(value = ContentFormatInterceptor.CONTENT_FORMATTER) ContentFormatter contentFormatter, ServerException serverException){
-        contentFormatter.content().'workspaceContent' {
-            'resultCode' serverException.exceptionCode
-            'exceptionInformation' messageSource.getMessage(serverException.toString(), null, LocaleContextHolder.getLocale())
+        contentFormatter.content().'workspace_content' {
+            'result_code' serverException.exceptionCode
+            'exception_information' messageSource.getMessage(serverException.toString(), null, LocaleContextHolder.getLocale())
         }
         return contentFormatter.toString()
     }

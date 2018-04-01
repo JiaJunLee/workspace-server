@@ -1,7 +1,6 @@
 package com.workspace.server.configuration
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -10,13 +9,13 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.CookieLocaleResolver
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor
-import org.springframework.web.servlet.i18n.SessionLocaleResolver
 
 @Configuration
 @Order(2)
+@Slf4j
 class I18nConfiguration extends WebMvcConfigurerAdapter {
 
-    private Logger logger = LoggerFactory.getLogger(I18nConfiguration.class)
+    public static final String I18N_PARAM_NAME = 'lang'
 
     @Bean
     LocaleResolver localeResolver() {
@@ -28,13 +27,13 @@ class I18nConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor()
-        lci.setParamName("lang")
+        lci.setParamName(I18N_PARAM_NAME)
         return lci
     }
 
     @Override
     void addInterceptors(InterceptorRegistry registry) {
-        logger.info('[workspace-server] Registration I18N Interceptor')
+        log.info('[workspace-server] Registration I18N Interceptor')
         registry.addInterceptor(localeChangeInterceptor())
     }
 

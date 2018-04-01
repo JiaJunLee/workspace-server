@@ -2,8 +2,7 @@ package com.workspace.server.configuration
 
 import com.workspace.server.exception.ContentFormatException
 import com.workspace.server.interceptor.ContentFormatInterceptor
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,9 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @Order(3)
+@Slf4j
 class ContentFormatConfiguration extends WebMvcConfigurerAdapter {
-
-    private Logger logger = LoggerFactory.getLogger(ContentFormatConfiguration.class)
 
     /**
      * support content format
@@ -37,14 +35,14 @@ class ContentFormatConfiguration extends WebMvcConfigurerAdapter {
     @Override
     void addInterceptors(InterceptorRegistry registry) {
         if(defaultOutputFormatType in outputFormatTypes.split(',')){
-            logger.info("[workspace-server] Support Content Format Types: ${outputFormatTypes.split(',')}")
-            logger.info("[workspace-server] Default Content Format Type: ${defaultOutputFormatType}")
+            log.info("[workspace-server] Support Content Format Types: ${outputFormatTypes.split(',')}")
+            log.info("[workspace-server] Default Content Format Type: ${defaultOutputFormatType}")
         } else{
-            logger.error("[workspace-server] Default Format Type: ${defaultOutputFormatType} Is Not In Support Content Format Types, Please Check Configuration!")
+            log.error("[workspace-server] Default Format Type: ${defaultOutputFormatType} Is Not In Support Content Format Types, Please Check Configuration!")
             throw new ContentFormatException()
         }
 
-        logger.info('[workspace-server] Registration Content Format Interceptor')
+        log.info('[workspace-server] Registration Content Format Interceptor')
         registry.addInterceptor(contentFormatInterceptor())
     }
 

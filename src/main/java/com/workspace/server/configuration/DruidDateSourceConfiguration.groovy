@@ -3,8 +3,7 @@ package com.workspace.server.configuration
 import com.alibaba.druid.pool.DruidDataSource
 import com.alibaba.druid.support.http.StatViewServlet
 import com.alibaba.druid.support.http.WebStatFilter
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.boot.web.servlet.ServletRegistrationBean
@@ -20,9 +19,8 @@ import java.sql.SQLException
  */
 @Configuration
 @Order(1)
+@Slf4j
 class DruidDateSourceConfiguration {
-
-    private Logger logger = LoggerFactory.getLogger(DruidDateSourceConfiguration.class)
 
     @Value('${spring.datasource.url}')
     private String dbUrl
@@ -71,7 +69,7 @@ class DruidDateSourceConfiguration {
 
     @Bean(initMethod = 'init', destroyMethod = 'close')
     DruidDataSource druidDataSource() {
-        logger.info('[workspace-server] Initialize Druid DataSource')
+        log.info('[workspace-server] Initialize Druid DataSource')
         DruidDataSource datasource = new DruidDataSource()
         datasource.setUrl(dbUrl)
         datasource.setUsername(username)
@@ -90,7 +88,7 @@ class DruidDateSourceConfiguration {
         try {
             datasource.setFilters(filters)
         } catch (SQLException e) {
-            logger.error('druid configuration initialization filter', e)
+            log.error('druid configuration initialization filter', e)
         }
         return datasource
     }
@@ -99,8 +97,8 @@ class DruidDateSourceConfiguration {
     private static final String DRUID_MANAGER_PASSWORD = 'admin'
 
     @Bean
-    public ServletRegistrationBean druidStatViewServlet() {
-        logger.info('[workspace-server] Registration Druid Servlet')
+    ServletRegistrationBean druidStatViewServlet() {
+        log.info('[workspace-server] Registration Druid Servlet')
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new StatViewServlet(), '/druid/*')
         registrationBean.addInitParameter('allow', '127.0.0.1')
         registrationBean.addInitParameter('deny', '192.168.31.234')
@@ -111,8 +109,8 @@ class DruidDateSourceConfiguration {
     }
 
     @Bean
-    public FilterRegistrationBean druidWebStatViewFilter() {
-        logger.info('[workspace-server] Registration Druid Filter')
+    FilterRegistrationBean druidWebStatViewFilter() {
+        log.info('[workspace-server] Registration Druid Filter')
         FilterRegistrationBean registrationBean = new FilterRegistrationBean(new WebStatFilter())
         registrationBean.addInitParameter('urlPatterns', '/*')
         registrationBean.addInitParameter('exclusions', '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*')

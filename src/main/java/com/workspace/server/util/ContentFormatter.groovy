@@ -2,14 +2,12 @@ package com.workspace.server.util
 
 import com.workspace.server.exception.ContentFormatException
 import groovy.json.JsonBuilder
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 import org.springframework.stereotype.Component
 
 @Component
+@Slf4j
 class ContentFormatter {
-
-    private Logger logger = LoggerFactory.getLogger(ContentFormatter.class)
 
     static final class ContentType {
         public static final String TYPE_JSON = 'JSON'
@@ -66,7 +64,7 @@ class ContentFormatter {
                     break
             }
         }else{
-            logger.error("[workspace-server] ${formatType} Is Not Support Content Format, Please Check!")
+            log.error("[workspace-server] ${formatType} Is Not Support Content Format, Please Check!")
             throw new ContentFormatException()
         }
     }

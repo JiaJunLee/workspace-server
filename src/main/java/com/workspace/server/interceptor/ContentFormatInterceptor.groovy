@@ -22,7 +22,7 @@ class ContentFormatInterceptor implements HandlerInterceptor {
     boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         ContentFormatter contentFormatter = new ContentFormatter(outputFormatTypes: outputFormatTypes, defaultOutputFormatType: defaultOutputFormatType)
         httpServletRequest.setAttribute(CONTENT_FORMATTER, contentFormatter)
-        String formatType = httpServletRequest.getParameter(paramName)
+        String formatType = httpServletRequest.getHeader(paramName)
         if(formatType!=null && !formatType?.trim()?.isEmpty()){
             switch (formatType?.trim()?.toUpperCase()){
                 case ContentFormatter.ContentType.TYPE_JSON:
