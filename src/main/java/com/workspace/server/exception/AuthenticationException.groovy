@@ -10,6 +10,11 @@ class AuthenticationException extends RuntimeException {
     static final class AuthenticationExceptionCode {
 
         /**
+         * 用户存在
+         */
+        static final Integer USER_EXISTS = 1020
+
+        /**
          * 用户不存在
          */
         static final Integer USER_NOT_FOUND = 1021

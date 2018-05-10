@@ -30,10 +30,10 @@ class HMAC {
         return Base64.getEncoder().encodeToString(mac.doFinal(str.getBytes()))
     }
 
-    Boolean validate (String str, String key, String algorithm, String actual) {
+    Boolean validate (String str, String key, String algorithm, String expect) {
         boolean result = false
         try {
-            result = digest(str, key, algorithm) == actual
+            result = digest(str, key, algorithm) == expect
         } catch (Exception e) {
             result = false
         } finally {

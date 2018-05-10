@@ -2,6 +2,7 @@ package com.workspace.server.handler
 
 import com.workspace.server.exception.ContentFormatException
 import com.workspace.server.interceptor.ContentFormatInterceptor
+import com.workspace.server.model.WorkspaceStatus
 import com.workspace.server.util.ContentFormatter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -27,6 +28,7 @@ class ContentFormatExceptionHandler {
         contentFormatter.content().'workspace_content' {
             'result_code' contentFormatException.exceptionCode
             'exception_information' messageSource.getMessage(contentFormatException.toString(), null, LocaleContextHolder.getLocale())
+            'status_code' WorkspaceStatus.FAIL
         }
         return contentFormatter.toString()
     }

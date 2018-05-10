@@ -1,8 +1,8 @@
 package com.workspace.server.handler
 
 import com.workspace.server.exception.AuthenticationException
-import com.workspace.server.exception.ServerException
 import com.workspace.server.interceptor.ContentFormatInterceptor
+import com.workspace.server.model.WorkspaceStatus
 import com.workspace.server.util.ContentFormatter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
@@ -30,8 +30,9 @@ class AuthenticationExceptionHandler {
             'result_code' authenticationException.exceptionCode
             'exception_information' messageSource.getMessage(authenticationException.toString(), null, LocaleContextHolder.getLocale())
             'user_information' {
-                'email' authenticationException.userEntity.email
+                'email' authenticationException?.userEntity?.email
             }
+            'status_code' WorkspaceStatus.FAIL
         }
         return contentFormatter.toString()
     }

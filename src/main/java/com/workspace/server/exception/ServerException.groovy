@@ -29,6 +29,16 @@ class ServerException extends RuntimeException {
          */
         static final Integer SYSTEM_UNKNOWN_ABNORMALITY = 1004
 
+        /**
+         * 禁止访问
+         */
+        static final Integer ACCESS_DENIED = 1005
+
+        /**
+         * 访问受限
+         */
+        static final Integer ACCESS_RESTRICTED = 1006
+
     }
 
     /**
@@ -55,6 +65,10 @@ class ServerException extends RuntimeException {
                 return 'server.exception.unknown-request'
             case ServerExceptionCode.SYSTEM_UNKNOWN_ABNORMALITY:
                 return 'server.exception.system-unknown-abnormality'
+            case ServerExceptionCode.ACCESS_DENIED:
+                return 'server.exception.access-denied'
+            case ServerExceptionCode.ACCESS_RESTRICTED:
+                return 'server.exception.access-restricted'
             default:
                 return 'server.exception.system-unknown-abnormality'
         }

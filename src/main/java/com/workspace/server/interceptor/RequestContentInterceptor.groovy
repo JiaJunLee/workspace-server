@@ -22,21 +22,22 @@ class RequestContentInterceptor implements HandlerInterceptor {
     private static JsonSlurper jsonSlurper = new JsonSlurper()
     public static final String JSON_CONTENT = 'JSON_CONTENT'
 
+    private static final List<String> ignoreURI = [ '/public_key', '/source', '/project-template', '/access' ]
+
     @Override
     boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         log.info('[workspace-server] Decode request content')
         Map parameterMap = httpServletRequest?.getParameterMap()
         if (parameterMap[JSON_CONTENT]) {
             try {
+                System.err.println(parameterMap[JSON_CONTENT])
                 httpServletRequest.setAttribute(JSON_CONTENT, jsonSlurper.parseText(RSA.getRsaDecoder().decode(parameterMap[JSON_CONTENT])))
             } catch (Exception e) {
                 log.error("[workspace-server] Decode Error, Details: ${e.toString()}")
                 throw new ContentFormatException(ContentFormatException.ContentFormatExceptionCode.CONTENT_DECODE_EXCEPTION)
             }
-        } else {
-            if (httpServletRequest.getRequestURI() != '/public_key') {
-                throw new ServerException(ServerException.ServerExceptionCode.UNKNOWN_REQUEST)
-            }
+        } else if (ignoreURI?.every { httpServletRequest?.getRequestURI()?.indexOf(it) == -1 }) {
+            throw new ServerException(ServerException.ServerExceptionCode.UNKNOWN_REQUEST)
         }
         return true
     }
